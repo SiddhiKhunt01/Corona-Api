@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Corona Details</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 20px;
+        }
+
+        input[type="text"] {
+            padding: 10px;
+            font-size: 16px;
+            width: 300px;
+        }
+
+        input[type="button"] {
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        #img {
+            display: block;
+            margin: 20px auto;
+            border-radius: 10px;
+        }
+
+        h1, h2, p {
+            margin: 10px 0;
+        }
+
+        p {
+            font-size: 16px;
+        }
+    </style>
+</head>
+<body>
+    <input type="text" id="country">
+    <input type="button" value="Search Cases" onclick="getDetails()">
+    <br><br>
+    <img src="2.avif" id="img" alt="" width="500px">
+    <h1 id="cases"></h1>
+    <h2 id="deaths"></h2>
+    <p id="recovered"></p>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script>
+         function getDetails(){
+            var country = document.getElementById('country').value;
+            $.ajax({
+                url:`https://disease.sh/v3/covid-19/countries/${country}`,
+                type:"get",
+                success: function(data){
+                    console.log(data);
+                    $('#img').attr('src' ,data.countryInfo.flag);
+                    document.getElementById('cases').innerHTML="Cases: "+data.cases;
+                    document.getElementById('deaths').innerHTML="Deaths: "+data.deaths;
+                    document.getElementById('recovered').innerHTML="Recovered: "+data.recovered;
+                },
+                error: function(xhr, status, error) {
+                    console.error("Error:", error);
+                    alert("Error: " + error);
+                }
+            })
+        }
+    </script>
+</body>
+</html>
